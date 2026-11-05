@@ -1,0 +1,6 @@
+
+The TCP three-way handshake establishes a connection in three steps: SYN, SYN-ACK, ACK. First the client sends
+a SYN segment carrying its initial sequence number. Second the server replies with SYN-ACK, acknowledging the
+client's number and sending its own. Third the client sends an ACK and the connection is established. After
+that, TCP uses a sliding window for flow control, so the sender never sends more than the receiver's
+advertised window, and a congestion window to avoid overloading the network.

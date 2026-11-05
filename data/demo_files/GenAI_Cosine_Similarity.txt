@@ -1,0 +1,5 @@
+
+Cosine similarity measures how similar two embedding vectors are by comparing the angle between them: values
+near 1 mean very similar meaning, values near 0 mean unrelated. When vectors are normalised to unit length,
+cosine similarity equals the dot product. It is the standard measure used to rank chunks against a query in
+semantic search.

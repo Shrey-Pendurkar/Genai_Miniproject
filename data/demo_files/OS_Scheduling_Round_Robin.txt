@@ -1,0 +1,6 @@
+
+Round Robin (RR) is a preemptive CPU scheduling algorithm in which each process gets the CPU for a fixed time
+quantum in turn, and is moved to the back of the ready queue if it has not finished. It is ideal for
+time-sharing systems because it gives every process fair, regular CPU time and good response time. Choosing
+the quantum is a trade-off: a very large quantum makes Round Robin behave like FCFS, and a very small quantum
+causes excessive context-switch overhead.

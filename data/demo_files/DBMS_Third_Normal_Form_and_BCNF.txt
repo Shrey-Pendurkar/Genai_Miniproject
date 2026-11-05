@@ -1,0 +1,6 @@
+
+Third Normal Form (3NF) requires the table to be in 2NF and no non-key attribute to be transitively dependent
+on the primary key; a transitive dependency is X -> Y and Y -> Z where X is the key. Boyce-Codd Normal Form
+(BCNF) is a stricter version of 3NF: for every functional dependency X -> Y, X must be a super key. Every BCNF
+table is also in 3NF, but not every 3NF table is in BCNF. Example: Student(StudentID, DeptID, DeptName)
+violates 3NF because DeptName depends on DeptID, so DeptName is moved to a separate Department table.

@@ -1,0 +1,6 @@
+
+Scaled dot-product attention computes softmax(QK^T / sqrt(d_k)) V, where Q (queries), K (keys) and V (values)
+are matrices derived from the input. The query-key dot products give similarity scores, dividing by sqrt(d_k)
+keeps them numerically stable, softmax turns them into weights that sum to 1, and the weights are used to mix
+the values. Each word therefore gets a dynamic, context-dependent representation built from the words it
+attends to.

@@ -1,0 +1,6 @@
+
+The RAG pipeline has four steps: 1. Document chunking splits text into chunks. 2. Embeddings map chunks into a
+vector space using sentence transformers. 3. Similarity search queries a vector database for the top-K most
+relevant chunks. 4. Prompt augmentation feeds the retrieved chunks to the LLM together with the question. The
+LLM then writes an answer based on those chunks, and the source file and page of each chunk can be shown as a
+citation.

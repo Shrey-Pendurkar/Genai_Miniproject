@@ -88,8 +88,16 @@ class LLMEngine:
             return cls._generate_fallback_json(prompt)
 
         # Extract context block if embedded in prompt
-        context_match = re.search(r"CONTEXT[ MATERIAL]*:\s*(.*?)(?=\n\n|\n[A-Z\s]+:|$)", prompt, re.DOTALL | re.IGNORECASE)
+        # NB: the section-header lookahead must be case-sensitive. With re.IGNORECASE alone,
+        # "\n[A-Z\s]+:" also matched ordinary sentences such as "\nACID properties guarantee
+        # reliable database transactions:" and truncated the context to just its header.
+        context_match = re.search(r"CONTEXT[ MATERIAL]*:\s*(.*?)(?=\n\n|\n(?-i:[A-Z][A-Z \t]+):|$)", prompt, re.DOTALL | re.IGNORECASE)
         context = context_match.group(1).strip() if context_match else prompt
+
+        # Retrieved chunks are raw study notes whose newlines were collapsed, so markdown
+        # heading markers ("# CHAPTER ... ## 1. ...") would render as one giant H1 line.
+        # Strip the markers so the quoted context displays as normal text.
+        context = re.sub(r"\s*#{1,6}\s+", " ", context).strip()
 
         # Determine tutoring mode
         if "Socratic" in system_prompt:

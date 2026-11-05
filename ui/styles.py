@@ -1,349 +1,382 @@
 import streamlit as st
 
+# ---------------------------------------------------------------------------
+# StudyMind design system
+# Neutral slate surfaces, one indigo accent, Inter typography, flat cards with
+# hairline borders. Tokens live in :root so every widget and component shares
+# the same palette.
+# ---------------------------------------------------------------------------
+
+_CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+    --bg: #0B0E14;
+    --surface: #11151D;
+    --surface-2: #161B26;
+    --surface-3: #1C2230;
+    --border: #232A38;
+    --border-strong: #303949;
+    --text: #E6E9EF;
+    --text-muted: #8B93A5;
+    --text-faint: #5F687B;
+    --accent: #6366F1;
+    --accent-hover: #7578F5;
+    --accent-soft: rgba(99, 102, 241, 0.14);
+    --accent-border: rgba(99, 102, 241, 0.38);
+    --success: #34D399;
+    --warning: #FBBF24;
+    --danger: #FB7185;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Base ---------- */
+html, body, .stApp, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+.stApp { background: var(--bg) !important; color: var(--text); }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif !important;
+    color: var(--text) !important;
+    letter-spacing: -0.02em;
+    font-weight: 650 !important;
+}
+h3 { font-size: 1.1rem !important; }
+h4 { font-size: 1rem !important; }
+p, li { color: var(--text); line-height: 1.65; }
+a { color: var(--accent-hover) !important; text-decoration: none; }
+a:hover { text-decoration: underline; }
+hr { border: none !important; border-top: 1px solid var(--border) !important; margin: 1.6rem 0 !important; }
+code {
+    font-family: 'JetBrains Mono', monospace !important;
+    background: var(--surface-3) !important;
+    color: #C7D2FE !important;
+    border-radius: 6px; padding: 0.12em 0.4em; font-size: 0.86em;
+}
+[data-testid="stCaptionContainer"], .stCaption, small { color: var(--text-muted) !important; }
+
+header[data-testid="stHeader"] { background: transparent !important; }
+#MainMenu, footer, [data-testid="stDecoration"] { visibility: hidden; display: none; }
+
+.block-container {
+    padding-top: 2.4rem !important;
+    padding-bottom: 4rem !important;
+    max-width: 1240px !important;
+}
+
+/* ---------- Sidebar ---------- */
+section[data-testid="stSidebar"] {
+    background: var(--surface) !important;
+    border-right: 1px solid var(--border) !important;
+}
+section[data-testid="stSidebar"] > div { padding-top: 0.4rem; }
+section[data-testid="stSidebar"] hr { margin: 1rem 0 !important; }
+
+/* Navigation: radio restyled as a vertical menu */
+section[data-testid="stSidebar"] div[data-testid="stRadio"] > label { display: none !important; }
+section[data-testid="stSidebar"] div[role="radiogroup"] { gap: 2px !important; }
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label > div:first-child { display: none !important; }
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label {
+    display: flex !important;
+    align-items: center !important;
+    width: 100%;
+    padding: 8px 12px !important;
+    margin: 0 !important;
+    border-radius: var(--radius-sm) !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label p,
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label span {
+    color: var(--text-muted) !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+}
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label:hover { background: var(--surface-2) !important; }
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label:hover p,
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label:hover span { color: var(--text) !important; }
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label:has(input:checked) {
+    background: var(--accent-soft) !important;
+    border-color: var(--accent-border) !important;
+}
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label:has(input:checked) p,
+section[data-testid="stSidebar"] div[data-testid="stRadio"] label:has(input:checked) span {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+}
+
+/* ---------- Widgets: labels & inputs ---------- */
+div[data-testid="stWidgetLabel"] p, .stWidgetLabel p, label p {
+    color: var(--text-muted) !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em;
+}
+.stTextInput input, .stTextArea textarea, .stNumberInput input,
+div[data-baseweb="select"] > div, div[data-baseweb="input"] > div {
+    background: var(--surface-2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--text) !important;
+    font-size: 0.93rem !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.stTextInput input:hover, .stTextArea textarea:hover, div[data-baseweb="select"] > div:hover {
+    border-color: var(--border-strong) !important;
+}
+.stTextInput input:focus, .stTextArea textarea:focus, .stNumberInput input:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px var(--accent-soft) !important;
+}
+input::placeholder, textarea::placeholder { color: var(--text-faint) !important; }
+div[data-baseweb="select"] span, div[data-baseweb="select"] div { color: var(--text) !important; }
+
+div[data-baseweb="popover"] > div, ul[role="listbox"], div[data-baseweb="menu"] {
+    background: var(--surface-2) !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: var(--radius-sm) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55) !important;
+}
+li[role="option"] { background: transparent !important; color: var(--text) !important; font-size: 0.9rem !important; }
+li[role="option"]:hover, li[role="option"][aria-selected="true"] { background: var(--accent-soft) !important; }
+
+/* Radios (main area), toggles, sliders */
+.stRadio [role="radiogroup"] label p { color: var(--text) !important; font-weight: 500 !important; font-size: 0.9rem !important; }
+.stSlider [data-baseweb="slider"] div[role="slider"] { background: var(--accent) !important; box-shadow: 0 0 0 4px var(--accent-soft) !important; }
+div[data-testid="stThumbValue"], div[data-testid="stTickBarMin"], div[data-testid="stTickBarMax"] { color: var(--text-muted) !important; font-size: 0.78rem !important; }
+.stCheckbox label p, .stToggle label p { color: var(--text) !important; font-weight: 500 !important; font-size: 0.92rem !important; }
+
+/* File uploader */
+[data-testid="stFileUploaderDropzone"] {
+    background: var(--surface) !important;
+    border: 1px dashed var(--border-strong) !important;
+    border-radius: var(--radius) !important;
+}
+[data-testid="stFileUploaderDropzone"]:hover { border-color: var(--accent) !important; background: var(--accent-soft) !important; }
+
+/* ---------- Buttons ---------- */
+.stButton > button, .stDownloadButton > button, .stFormSubmitButton > button,
+button[data-testid^="stBaseButton-"] {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 0.55rem 1.1rem !important;
+    min-height: 2.5rem;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease !important;
+}
+/* Secondary (default) */
+.stButton > button[kind="secondary"], .stDownloadButton > button, button[data-testid="stBaseButton-secondary"],
+button[data-testid="stBaseButton-secondaryFormSubmit"] {
+    background: var(--surface-2) !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text) !important;
+    box-shadow: none !important;
+}
+.stButton > button[kind="secondary"]:hover, .stDownloadButton > button:hover,
+button[data-testid="stBaseButton-secondary"]:hover {
+    background: var(--surface-3) !important;
+    border-color: var(--accent-border) !important;
+    color: #FFFFFF !important;
+}
+/* Primary */
+.stButton > button[kind="primary"], button[data-testid="stBaseButton-primary"],
+button[data-testid="stBaseButton-primaryFormSubmit"], .stFormSubmitButton > button[kind="primary"] {
+    background: var(--accent) !important;
+    border: 1px solid var(--accent) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+}
+.stButton > button[kind="primary"]:hover, button[data-testid="stBaseButton-primary"]:hover,
+button[data-testid="stBaseButton-primaryFormSubmit"]:hover {
+    background: var(--accent-hover) !important;
+    border-color: var(--accent-hover) !important;
+}
+.stButton > button p, .stFormSubmitButton > button p, .stDownloadButton > button p {
+    color: inherit !important; font-weight: 600 !important; font-size: 0.9rem !important; margin: 0;
+}
+.stButton > button:active { transform: translateY(1px); }
+.stButton > button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.stButton > button:disabled { opacity: 0.45; }
+
+/* ---------- Containers, expanders, tabs ---------- */
+div[data-testid="stVerticalBlockBorderWrapper"]:has(> div > div[data-testid="stVerticalBlock"]) { border-radius: var(--radius); }
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    border-color: var(--border) !important;
+}
+div[data-testid="stExpander"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+}
+div[data-testid="stExpander"] summary { padding: 0.7rem 1rem; }
+div[data-testid="stExpander"] summary p { color: var(--text) !important; font-weight: 600 !important; font-size: 0.9rem !important; }
+
+.stTabs [data-baseweb="tab-list"] { gap: 4px; border-bottom: 1px solid var(--border); background: transparent; padding: 0; }
+.stTabs [data-baseweb="tab"] {
+    background: transparent !important; padding: 10px 16px; border-radius: 0; height: auto;
+}
+.stTabs [data-baseweb="tab"] p { color: var(--text-muted) !important; font-weight: 600 !important; font-size: 0.9rem !important; }
+.stTabs [data-baseweb="tab"]:hover p { color: var(--text) !important; }
+.stTabs [aria-selected="true"] p { color: #FFFFFF !important; }
+.stTabs [data-baseweb="tab-highlight"] { background: var(--accent) !important; height: 2px !important; }
+.stTabs [data-baseweb="tab-border"] { display: none; }
+
+/* Alerts */
+div[data-testid="stAlert"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+}
+div[data-testid="stAlert"] p { color: var(--text) !important; font-size: 0.92rem !important; }
+
+/* Native metrics, progress, tables */
+div[data-testid="stMetric"] {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+}
+div[data-testid="stMetricLabel"] p { color: var(--text-muted) !important; font-size: 0.78rem !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: 0.05em; }
+div[data-testid="stMetricValue"] { color: var(--text) !important; font-weight: 700 !important; }
+.stProgress > div > div > div > div { background: var(--accent) !important; }
+.stProgress > div > div > div { background: var(--surface-3) !important; }
+div[data-testid="stDataFrame"] { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+div[data-testid="stCodeBlock"], pre { border: 1px solid var(--border) !important; border-radius: var(--radius-sm) !important; background: var(--surface) !important; }
+div[data-testid="stSpinner"] p { color: var(--text-muted) !important; }
+
+/* ---------- Chat ---------- */
+div[data-testid="stChatMessage"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.9rem;
+    gap: 0.9rem;
+}
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) { background: var(--surface-2) !important; }
+div[data-testid="stChatMessage"] p { font-size: 0.94rem; }
+div[data-testid="stChatMessageAvatarUser"], div[data-testid="stChatMessageAvatarAssistant"] {
+    background: var(--accent-soft) !important; color: #C7D2FE !important; border: 1px solid var(--accent-border);
+}
+div[data-testid="stChatInput"] {
+    background: var(--surface-2) !important; border: 1px solid var(--border-strong) !important;
+    border-radius: var(--radius) !important;
+}
+div[data-testid="stChatInput"]:focus-within { border-color: var(--accent) !important; box-shadow: 0 0 0 3px var(--accent-soft); }
+div[data-testid="stChatInput"] textarea { background: transparent !important; border: none !important; box-shadow: none !important; }
+div[data-testid="stBottom"] > div { background: var(--bg) !important; }
+
+/* ---------- Custom components ---------- */
+.sm-brand { display: flex; align-items: center; gap: 11px; padding: 14px 6px 18px; }
+.sm-brand-mark {
+    width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+    box-shadow: 0 4px 14px -4px rgba(99, 102, 241, 0.7);
+}
+.sm-brand-mark svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sm-brand-name { font-size: 1.05rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; line-height: 1.1; }
+.sm-brand-tag { font-size: 0.7rem; color: var(--text-faint); font-weight: 500; letter-spacing: 0.02em; margin-top: 2px; }
+
+.sm-user {
+    display: flex; align-items: center; gap: 11px; padding: 11px 12px;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.sm-avatar {
+    width: 34px; height: 34px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: var(--accent-soft); border: 1px solid var(--accent-border); color: #C7D2FE; font-weight: 700; font-size: 0.85rem;
+}
+.sm-user-name { font-size: 0.86rem; font-weight: 600; color: var(--text); line-height: 1.25; }
+.sm-user-meta { font-size: 0.72rem; color: var(--text-muted); line-height: 1.35; }
+
+.sm-page-header { margin-bottom: 1.6rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); }
+.sm-eyebrow {
+    display: inline-block; font-size: 0.7rem; font-weight: 700; color: var(--accent-hover);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;
+}
+.sm-page-title { font-size: 1.85rem; font-weight: 750; color: var(--text); letter-spacing: -0.03em; line-height: 1.2; margin: 0; }
+.sm-page-sub { font-size: 0.97rem; color: var(--text-muted); margin: 8px 0 0; max-width: 760px; line-height: 1.55; }
+
+.sm-section-title { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.09em; margin: 0.4rem 0 0.9rem; }
+
+.sm-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px 22px; margin-bottom: 16px; box-shadow: var(--shadow);
+}
+.sm-card p:last-child, .sm-card-accent p:last-child { margin-bottom: 0; }
+.sm-card-gradient, .sm-card-accent {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.13) 0%, rgba(99, 102, 241, 0.04) 100%), var(--surface);
+    border: 1px solid var(--accent-border); border-radius: var(--radius);
+    padding: 20px 22px; margin-bottom: 16px;
+}
+
+.sm-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); height: 100%; }
+.sm-stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.sm-stat-label { font-size: 0.74rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; }
+.sm-stat-value { font-size: 1.9rem; font-weight: 700; color: var(--text); letter-spacing: -0.03em; line-height: 1.1; }
+.sm-stat-sub { font-size: 0.78rem; color: var(--text-faint); margin-top: 6px; }
+.sm-icon {
+    width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    background: var(--accent-soft); border: 1px solid var(--accent-border);
+}
+.sm-icon svg { width: 17px; height: 17px; stroke: #A5B4FC; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.sm-feature-title { font-size: 0.98rem; font-weight: 650; color: var(--text); margin: 12px 0 4px; letter-spacing: -0.01em; }
+.sm-feature-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.5; min-height: 2.5em; margin: 0 0 6px; }
+
+.sm-chip {
+    display: inline-flex; align-items: center; gap: 8px; background: var(--surface-2);
+    border: 1px solid var(--border-strong); border-radius: 999px; padding: 5px 6px 5px 12px;
+    font-size: 0.8rem; font-weight: 500; color: var(--text); margin: 3px 6px 3px 0;
+}
+.sm-chip-page { color: var(--text-muted); }
+.sm-chip-score { background: var(--accent-soft); color: #C7D2FE; border-radius: 999px; padding: 2px 9px; font-weight: 600; font-size: 0.74rem; }
+
+.sm-progress { height: 6px; border-radius: 999px; background: var(--surface-3); overflow: hidden; margin-top: 14px; }
+.sm-progress > div { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #6366F1, #8B5CF6); }
+
+.sm-badge {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 600; color: var(--text-muted);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px;
+}
+
+.sm-flashcard {
+    min-height: 260px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+    padding: 36px 44px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow); margin: 6px 0 18px;
+}
+.sm-flashcard.is-answer { background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(99, 102, 241, 0.04)), var(--surface); border-color: var(--accent-border); }
+.sm-flashcard-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-hover); margin-bottom: 14px; }
+.sm-flashcard-text { font-size: 1.3rem; font-weight: 600; color: var(--text); line-height: 1.5; letter-spacing: -0.01em; margin: 0; }
+.sm-flashcard.is-answer .sm-flashcard-text { font-size: 1.1rem; font-weight: 500; }
+.sm-flashcard-hint { margin-top: 20px; font-size: 0.78rem; color: var(--text-faint); }
+
+/* Auth screen */
+.sm-auth-hero { padding: 8px 8px 0 0; }
+.sm-auth-hero h1 { font-size: 2.5rem !important; line-height: 1.12; font-weight: 750 !important; letter-spacing: -0.035em; margin: 18px 0 14px; }
+.sm-auth-hero h1 span { background: linear-gradient(90deg, #A5B4FC, #C4B5FD); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.sm-auth-hero p.lead { color: var(--text-muted); font-size: 1.02rem; max-width: 460px; }
+.sm-auth-points { margin-top: 26px; display: grid; gap: 14px; }
+.sm-auth-point { display: flex; gap: 12px; align-items: flex-start; }
+.sm-auth-point .sm-icon { flex: none; }
+.sm-auth-point b { display: block; color: var(--text); font-size: 0.92rem; font-weight: 600; }
+.sm-auth-point span { color: var(--text-muted); font-size: 0.84rem; line-height: 1.45; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 8px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
+</style>
+"""
+
+
 def inject_custom_css():
-    """Injects high-contrast, startup-grade modern glassmorphic dark theme CSS into Streamlit."""
-    st.markdown("""
-    <style>
-    /* Google Fonts Import */
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
-
-    /* Global Typography & System Colors */
-    html, body, [class*="css"] {
-        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'Outfit', sans-serif !important;
-        letter-spacing: -0.01em;
-        color: #f8fafc !important;
-    }
-
-    p, span, div, caption {
-        color: #cbd5e1;
-    }
-
-    /* App Canvas Background */
-    .stApp {
-        background: radial-gradient(circle at 12% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 45%),
-                    radial-gradient(circle at 88% 85%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
-                    #0b0f19 !important;
-        color: #f8fafc !important;
-    }
-
-    /* Style Streamlit Header Bar to be transparent while keeping collapsed sidebar toggle visible */
-    header[data-testid="stHeader"] {
-        background: transparent !important;
-        z-index: 9999 !important;
-    }
-    
-    /* Always show the Sidebar Toggle (Open/Close) button */
-    div[data-testid="stSidebarCollapsedControl"],
-    button[kind="header"] {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        background: rgba(30, 41, 59, 0.85) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 10px !important;
-        color: #ffffff !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-    }
-
-    button[kind="header"] svg {
-        fill: #f8fafc !important;
-        color: #f8fafc !important;
-    }
-    
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    
-    .block-container {
-        padding-top: 3rem !important;
-        padding-bottom: 3.5rem !important;
-        max-width: 1220px !important;
-    }
-
-    /* Input Widget Labels - HIGH CONTRAST FIX */
-    label, 
-    .stWidgetLabel, 
-    div[data-testid="stWidgetLabel"] p, 
-    div[data-testid="stWidgetLabel"] label, 
-    label p, 
-    .stMarkdown p {
-        color: #f8fafc !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-        opacity: 1 !important;
-    }
-
-    /* Text Inputs, Text Areas, Selectboxes - HIGH CONTRAST FIX */
-    .stTextInput > div > div > input,
-    .stTextArea > div > div > textarea,
-    .stSelectbox > div > div > div,
-    input[type="text"],
-    input[type="password"] {
-        background: #1e293b !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 12px !important;
-        color: #ffffff !important;
-        font-size: 0.98rem !important;
-        font-weight: 500 !important;
-        padding: 10px 14px !important;
-    }
-
-    .stTextInput > div > div > input::placeholder,
-    .stTextArea > div > div > textarea::placeholder,
-    input::placeholder {
-        color: #94a3b8 !important;
-        opacity: 0.9 !important;
-    }
-
-    .stTextInput > div > div > input:focus,
-    .stTextArea > div > div > textarea:focus {
-        border-color: #818cf8 !important;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35) !important;
-    }
-
-    /* Selectbox Dropdown Menu Popover - HIGH CONTRAST FIX */
-    div[data-baseweb="popover"],
-    div[data-baseweb="menu"],
-    ul[role="listbox"],
-    ul[data-testid="stSelectboxVirtualDropdown"] {
-        background-color: #1e293b !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 12px !important;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
-    }
-
-    li[role="option"],
-    div[data-baseweb="option"] {
-        background-color: #1e293b !important;
-        color: #f8fafc !important;
-        font-weight: 500 !important;
-        font-size: 0.95rem !important;
-    }
-
-    li[role="option"] p,
-    li[role="option"] span,
-    div[data-baseweb="option"] p,
-    div[data-baseweb="option"] span {
-        color: #f8fafc !important;
-    }
-
-    li[role="option"]:hover,
-    li[role="option"][aria-selected="true"],
-    div[data-baseweb="option"]:hover {
-        background-color: #4f46e5 !important;
-        color: #ffffff !important;
-    }
-
-    /* Standard Buttons & Form Submit Buttons - HIGH CONTRAST FIX */
-    .stButton > button,
-    .stFormSubmitButton > button {
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
-        color: #ffffff !important;
-        font-family: 'Outfit', sans-serif !important;
-        font-weight: 700 !important;
-        font-size: 0.98rem !important;
-        letter-spacing: 0.01em !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 12px !important;
-        padding: 0.65rem 1.4rem !important;
-        transition: all 0.22s ease-in-out !important;
-        box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4) !important;
-    }
-
-    .stButton > button p,
-    .stButton > button span,
-    .stFormSubmitButton > button p,
-    .stFormSubmitButton > button span {
-        color: #ffffff !important;
-        font-weight: 700 !important;
-    }
-
-    .stButton > button:hover,
-    .stFormSubmitButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.55) !important;
-        background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%) !important;
-        border-color: rgba(255, 255, 255, 0.4) !important;
-    }
-
-    /* Sidebar Base Styling */
-    section[data-testid="stSidebar"] {
-        background: #0d1322 !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Hide Radio Input Circles in Sidebar Navigation */
-    section[data-testid="stSidebar"] div[data-testid="stRadio"] label > div:first-child {
-        display: none !important;
-    }
-
-    /* Style Sidebar Radio Labels as Sleek Navigation Buttons */
-    section[data-testid="stSidebar"] div[data-testid="stRadio"] label {
-        display: flex !important;
-        align-items: center !important;
-        padding: 10px 14px !important;
-        margin-bottom: 5px !important;
-        border-radius: 12px !important;
-        background: rgba(255, 255, 255, 0.03) !important;
-        border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        color: #cbd5e1 !important;
-        font-weight: 600 !important;
-        font-size: 0.92rem !important;
-        cursor: pointer !important;
-        transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    section[data-testid="stSidebar"] div[data-testid="stRadio"] label:hover {
-        background: rgba(99, 102, 241, 0.15) !important;
-        border-color: rgba(99, 102, 241, 0.35) !important;
-        color: #ffffff !important;
-        transform: translateX(4px) !important;
-    }
-
-    /* Selected Radio Navigation Button */
-    section[data-testid="stSidebar"] div[data-testid="stRadio"] label[aria-checked="true"],
-    section[data-testid="stSidebar"] div[data-testid="stRadio"] label:has(input:checked) {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(168, 85, 247, 0.25) 100%) !important;
-        border: 1px solid rgba(168, 85, 247, 0.5) !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3) !important;
-        position: relative;
-    }
-
-    section[data-testid="stSidebar"] div[data-testid="stRadio"] label[aria-checked="true"]::before,
-    section[data-testid="stSidebar"] div[data-testid="stRadio"] label:has(input:checked)::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 20%;
-        bottom: 20%;
-        width: 4px;
-        background: linear-gradient(to bottom, #818cf8, #c084fc);
-        border-radius: 0 4px 4px 0;
-    }
-
-    /* Premium Glassmorphic Cards */
-    .sm-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.85) 100%);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-top: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 18px;
-        padding: 24px;
-        margin-bottom: 22px;
-        box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Gradient Featured Card */
-    .sm-card-gradient {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 50%, rgba(236, 72, 153, 0.18) 100%);
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(168, 85, 247, 0.4);
-        border-top: 1px solid rgba(192, 132, 252, 0.55);
-        border-radius: 18px;
-        padding: 24px;
-        margin-bottom: 22px;
-    }
-
-    /* Metric Values & Labels */
-    .sm-metric-val {
-        font-family: 'Outfit', sans-serif;
-        font-size: 2.3rem;
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 50%, #f472b6 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .sm-metric-label {
-        font-size: 0.82rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #cbd5e1;
-        letter-spacing: 0.08em;
-        margin-bottom: 4px;
-    }
-
-    /* Icon Container Box */
-    .sm-icon-box {
-        width: 48px;
-        height: 48px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(168, 85, 247, 0.25) 100%);
-        border: 1px solid rgba(168, 85, 247, 0.35);
-    }
-
-    /* Source Chips */
-    .sm-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: rgba(99, 102, 241, 0.18);
-        color: #c7d2fe;
-        border: 1px solid rgba(99, 102, 241, 0.35);
-        border-radius: 10px;
-        padding: 5px 12px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        margin: 4px 6px 4px 0;
-    }
-
-    /* Tabs Styling - HIGH CONTRAST FIX */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background: rgba(15, 23, 42, 0.8);
-        padding: 6px;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 10px;
-        padding: 10px 20px;
-        color: #cbd5e1 !important;
-        font-weight: 600;
-        font-size: 0.95rem;
-    }
-
-    .stTabs [data-baseweb="tab"] p,
-    .stTabs [data-baseweb="tab"] span {
-        color: #cbd5e1 !important;
-    }
-
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.25) !important;
-        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
-    }
-
-    .stTabs [aria-selected="true"] p,
-    .stTabs [aria-selected="true"] span {
-        color: #ffffff !important;
-        font-weight: 700 !important;
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-        background: #0b0f19;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: rgba(99, 102, 241, 0.4);
-        border-radius: 4px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    """Injects the StudyMind design system (tokens, widget overrides, components)."""
+    st.markdown(_CSS, unsafe_allow_html=True)

@@ -6,8 +6,7 @@ from features.mock_exam import MockExamFeature
 def render_mock_exam_page():
     UIComponents.render_header(
         title="Mock Examination",
-        subtitle="Test your knowledge under university examination conditions.",
-        icon="🧪"
+        subtitle="Test your knowledge under university examination conditions."
     )
 
     col_subj, col_top, col_q, col_d = st.columns(4)
@@ -20,7 +19,7 @@ def render_mock_exam_page():
     with col_d:
         difficulty = st.selectbox("Exam Difficulty", ["Medium", "Hard"])
 
-    if st.button("🚀 Start Distraction-Free Exam", key="btn_start_exam"):
+    if st.button("Start distraction-free exam", key="btn_start_exam", type="primary", icon=":material/play_arrow:"):
         with st.spinner("Generating university exam paper from vector knowledge base..."):
             exam_data = MockExamFeature.generate_exam(
                 subject=subject,
@@ -55,9 +54,9 @@ def render_mock_exam_page():
         st.caption(f"Topics: `{active_exam['topics']}` | Total Questions: {len(active_exam['questions'])}")
     with col_t:
         st.markdown(f"""
-        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); padding: 10px; border-radius: 10px; text-align: center;">
-            <div style="font-size: 0.75rem; color: #fca5a5; font-weight: 700; text-transform: uppercase;">TIME REMAINING</div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #ef4444;">{rem_min:02d}:{rem_s:02d}</div>
+        <div style="background: rgba(251, 113, 133, 0.10); border: 1px solid rgba(251, 113, 133, 0.35); padding: 10px; border-radius: 12px; text-align: center;">
+            <div style="font-size: 0.7rem; color: #FDA4AF; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">Time remaining</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #FB7185; font-variant-numeric: tabular-nums;">{rem_min:02d}:{rem_s:02d}</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -83,7 +82,7 @@ def render_mock_exam_page():
                 st.session_state["exam_user_answers"] = user_answers
             st.divider()
 
-        if st.button("📥 Submit Exam Paper", key="btn_submit_exam"):
+        if st.button("Submit exam paper", key="btn_submit_exam", type="primary", icon=":material/task_alt:"):
             st.session_state["exam_submitted"] = True
             report = MockExamFeature.evaluate_exam(active_exam, user_answers, elapsed_sec)
             st.session_state["exam_report"] = report
@@ -96,25 +95,25 @@ def render_mock_exam_page():
             
             col_s1, col_s2, col_s3 = st.columns(3)
             with col_s1:
-                UIComponents.render_metric_card("🎯", "Exam Score", f"{report['percentage']}%", f"{report['score']} / {report['max_score']} Correct")
+                UIComponents.render_metric_card("target", "Exam Score", f"{report['percentage']}%", f"{report['score']} / {report['max_score']} Correct")
             with col_s2:
-                UIComponents.render_metric_card("⏱️", "Time Spent", f"{report['time_taken_sec'] // 60}m {report['time_taken_sec'] % 60}s", f"Limit: {active_exam['duration_minutes']} mins")
+                UIComponents.render_metric_card("clock", "Time Spent", f"{report['time_taken_sec'] // 60}m {report['time_taken_sec'] % 60}s", f"Limit: {active_exam['duration_minutes']} mins")
             with col_s3:
-                UIComponents.render_metric_card("🎖️", "XP Awarded", f"+{report['score'] * 20} XP", "Added to Rank")
+                UIComponents.render_metric_card("award", "XP Awarded", f"+{report['score'] * 20} XP", "Added to Rank")
 
             st.markdown(f'<div class="sm-card-gradient">{report["feedback"]}</div>', unsafe_allow_html=True)
 
             col_str, col_wk = st.columns(2)
             with col_str:
-                st.markdown("### 🟢 Strong Topics")
+                st.markdown("### Strong topics")
                 for t in report.get("strong_topics", ["Core Concepts"]):
                     st.success(f"✓ {t}")
             with col_wk:
-                st.markdown("### 🔴 Weak Topics (Requires Revision)")
+                st.markdown("### Weak topics (needs revision)")
                 for t in report.get("weak_topics", ["Edge Cases"]):
                     st.error(f"⚠️ {t}")
 
-            if st.button("🔄 Take Another Exam"):
+            if st.button("Take another exam", icon=":material/replay:"):
                 st.session_state["active_exam"] = None
                 st.session_state["exam_submitted"] = False
                 st.rerun()

@@ -6,8 +6,7 @@ from features.summaries import SummaryFeature
 def render_summarize_page():
     UIComponents.render_header(
         title="Document Summarizer",
-        subtitle="Extract high-yield executive summaries, key concepts, formulas, and exam questions.",
-        icon="📝"
+        subtitle="Extract high-yield executive summaries, key concepts, formulas, and exam questions."
     )
 
     user = st.session_state.get("authenticated_user")
@@ -36,7 +35,7 @@ def render_summarize_page():
 
     col_btn1, col_btn2 = st.columns([1.5, 1])
     with col_btn1:
-        if st.button("✨ Generate AI Summary", key="btn_gen_summary", use_container_width=True):
+        if st.button("Generate AI summary", key="btn_gen_summary", type="primary", icon=":material/auto_awesome:", width="stretch"):
             with st.spinner(f"Synthesizing '{depth}' academic summary..."):
                 summary_md = SummaryFeature.generate_summary(selected_doc_id, depth=depth)
                 st.session_state[cache_key] = summary_md
@@ -49,14 +48,14 @@ def render_summarize_page():
         # Action Toolbar
         col_t1, col_t2 = st.columns([3, 1])
         with col_t1:
-            st.markdown(f"<span style='color: #c084fc; font-weight: 700; font-size: 0.9rem;'>📄 AI Summary — {selected_doc_name} ({depth} Depth)</span>", unsafe_allow_html=True)
+            st.markdown(f"<span class='sm-badge'>AI summary · {selected_doc_name} · {depth} depth</span>", unsafe_allow_html=True)
         with col_t2:
             st.download_button(
                 label="📥 Download (.md)",
                 data=cached_summary,
                 file_name=f"{selected_doc_name}_summary_{depth.lower()}.md",
                 mime="text/markdown",
-                use_container_width=True
+                width="stretch"
             )
 
         st.markdown(f'<div class="sm-card" style="margin-top: 10px;">{cached_summary}</div>', unsafe_allow_html=True)

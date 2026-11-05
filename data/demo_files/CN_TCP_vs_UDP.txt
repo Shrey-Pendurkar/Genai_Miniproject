@@ -1,0 +1,6 @@
+
+TCP and UDP are the two main transport layer protocols. TCP (Transmission Control Protocol) is
+connection-oriented and reliable: it uses a three-way handshake, guarantees in-order delivery with
+acknowledgements and retransmission, and applies flow control and congestion control. UDP (User Datagram
+Protocol) is connectionless, lightweight and unreliable: it has no handshake, no ordering guarantee and no
+retransmission, so it has lower latency.

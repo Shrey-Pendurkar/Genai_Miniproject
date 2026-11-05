@@ -1,0 +1,4 @@
+
+An LLM hallucination is a fluent, confident answer that is factually wrong or not supported by any source. It
+happens because language models predict likely next words from patterns in their training data and do not
+verify facts. Hallucinations are risky in education and exams because a wrong explanation sounds convincing.

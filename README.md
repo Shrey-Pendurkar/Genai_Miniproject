@@ -204,7 +204,7 @@ Open your browser at `http://localhost:8501`.
 During your project demonstration / viva examination, show these key workflows:
 1. **Dashboard**: Show streak, study hours, quiz accuracy, level badge, and AI insight card.
 2. **Document Library**: Upload a new PDF/DOCX or demonstrate pre-seeded CS study files.
-3. **AI Tutor**: Ask *"What is deadlock prevention?"* and test **Socratic Mode** and **Exam Mode**. Show source citations and expand **"🔍 How StudyMind Answered"** transparency accordion.
+3. **AI Tutor**: Ask *"What are the four necessary conditions for deadlock?"* and test **Socratic Mode** and **Exam Mode**. Show source citations and expand **"🔍 How StudyMind Answered"** transparency accordion.
 4. **Quiz Generator**: Generate a 5-question quiz, enable **Adaptive Difficulty**, answer questions, and view instant feedback with explanations and source citations.
 5. **Smart Flashcards**: Flip cards, mark *"I Know This"*, and show mastery score updates.
 6. **Weak Topic Detection**: Click **"Fix My Weakness"** to show targeted AI remedial breakdown.

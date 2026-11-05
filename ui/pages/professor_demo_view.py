@@ -4,14 +4,13 @@ from ui.components import UIComponents
 def render_professor_demo_page():
     UIComponents.render_header(
         title="Project Insights & Architecture (Viva Demo)",
-        subtitle="Interactive visual breakdown of StudyMind's Generative AI & RAG Pipeline for academic presentation.",
-        icon="🧪"
+        subtitle="Interactive visual breakdown of StudyMind's Generative AI & RAG Pipeline for academic presentation."
     )
 
     st.markdown("""
     <div class="sm-card-gradient">
-        <h3 style="margin-top: 0; color: #f8fafc;">🎓 Academic Viva & Demonstration Guide</h3>
-        <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">
+        <h3 style="margin-top: 0;">Academic viva &amp; demonstration guide</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
             This page explains the internal engineering steps of StudyMind to demonstrate how Generative AI concepts 
             (Document Chunking, Sentence Embeddings, FAISS Vector Search, Prompt Engineering, and RAG Grounding) are implemented end-to-end.
         </p>
@@ -19,7 +18,7 @@ def render_professor_demo_page():
     """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown("### 🔄 End-to-End RAG Architecture Pipeline")
+    st.markdown("### End-to-End RAG Architecture Pipeline")
 
     # Step Tabs
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([

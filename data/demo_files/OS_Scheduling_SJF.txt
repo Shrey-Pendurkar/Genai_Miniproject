@@ -1,0 +1,5 @@
+
+Shortest Job First (SJF) is a CPU scheduling algorithm that always runs the process with the smallest next CPU
+burst time, and it gives the minimum average waiting time of any scheduling algorithm. Its drawbacks are that
+the burst time must be known or predicted in advance, and that long processes can starve if short ones keep
+arriving. The preemptive version is called Shortest Remaining Time First (SRTF).

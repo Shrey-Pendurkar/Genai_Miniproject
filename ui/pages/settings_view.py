@@ -6,8 +6,7 @@ from config.settings import GROQ_API_KEY, OPENAI_API_KEY, DEFAULT_LLM_PROVIDER, 
 def render_settings_page():
     UIComponents.render_header(
         title="Settings & System Configuration",
-        subtitle="Manage LLM providers, model parameters, API keys, and application preferences.",
-        icon="⚙️"
+        subtitle="Manage LLM providers, model parameters, API keys, and application preferences."
     )
 
     # API Status Banner
@@ -18,7 +17,7 @@ def render_settings_page():
         st.info("💡 Smart Local Fallback Engine Active. No external API key required! Add a Groq/OpenAI key below to enable cloud LLM power.")
 
     st.markdown("---")
-    st.markdown("### 🤖 AI Model Configuration")
+    st.markdown("### AI Model Configuration")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -34,12 +33,12 @@ def render_settings_page():
         top_k = st.slider("RAG Top-K Chunks to Retrieve", min_value=1, max_value=10, value=3)
 
     st.markdown("---")
-    st.markdown("### 🔑 API Key Entry")
+    st.markdown("### API Key Entry")
 
     groq_key_input = st.text_input("Groq API Key", type="password", value=GROQ_API_KEY or os.getenv("GROQ_API_KEY", ""))
     openai_key_input = st.text_input("OpenAI API Key", type="password", value=OPENAI_API_KEY or os.getenv("OPENAI_API_KEY", ""))
 
-    if st.button("💾 Save Settings & Update Environment", key="btn_save_settings"):
+    if st.button("Save settings", key="btn_save_settings", type="primary", icon=":material/save:"):
         if groq_key_input:
             os.environ["GROQ_API_KEY"] = groq_key_input.strip()
         if openai_key_input:
@@ -48,5 +47,5 @@ def render_settings_page():
         st.rerun()
 
     st.markdown("---")
-    st.markdown("### 🎨 Appearance & UI Preferences")
+    st.markdown("### Appearance & UI Preferences")
     st.selectbox("Theme Direction", ["Dark Glassmorphism (Recommended)", "Classic Light"], index=0)

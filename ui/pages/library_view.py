@@ -9,15 +9,14 @@ from database.models import DocumentModel
 def render_library_page():
     UIComponents.render_header(
         title="My Document Library",
-        subtitle="Upload and manage lecture notes, textbooks, PDFs, and syllabus materials.",
-        icon="📚"
+        subtitle="Upload and manage lecture notes, textbooks, PDFs, and syllabus materials."
     )
 
     user = st.session_state.get("authenticated_user", {})
     user_id = user.get("id", 1)
 
     # File Upload Section
-    st.markdown("### 📤 Upload Study Material")
+    st.markdown("### Upload Study Material")
     uploaded_file = st.file_uploader(
         "Select PDF, DOCX, PPTX, or TXT file to index into StudyMind",
         type=["pdf", "docx", "pptx", "txt"],
@@ -25,7 +24,7 @@ def render_library_page():
     )
 
     if uploaded_file is not None:
-        if st.button("🚀 Process & Index Document", key="btn_process_upload"):
+        if st.button("Process & index document", key="btn_process_upload", type="primary", icon=":material/upload_file:"):
             with st.spinner("Reading document, extracting text, generating embeddings & vector indexing..."):
                 save_path = UPLOADS_DIR / uploaded_file.name
                 with open(save_path, "wb") as f:
@@ -57,7 +56,7 @@ def render_library_page():
     st.markdown("---")
 
     # Document Cards List
-    st.markdown("### 📄 Indexed Study Documents")
+    st.markdown("### Indexed Study Documents")
     docs = DocumentModel.get_all_documents(user_id=user_id)
 
     if not docs:
@@ -76,17 +75,17 @@ def render_library_page():
             with col3:
                 btn_col1, btn_col2, btn_col3 = st.columns(3)
                 with btn_col1:
-                    if st.button("💬 Chat", key=f"chat_doc_{doc['id']}"):
+                    if st.button("Chat", key=f"chat_doc_{doc['id']}", icon=":material/forum:", width="stretch"):
                         st.session_state['selected_doc_filter'] = doc['filename']
                         st.session_state['active_nav'] = "💬 AI Tutor"
                         st.rerun()
                 with btn_col2:
-                    if st.button("📝 Summary", key=f"sum_doc_{doc['id']}"):
+                    if st.button("Summary", key=f"sum_doc_{doc['id']}", icon=":material/summarize:", width="stretch"):
                         st.session_state['selected_doc_id'] = doc['id']
                         st.session_state['active_nav'] = "📝 Summarize"
                         st.rerun()
                 with btn_col3:
-                    if st.button("🗑️", key=f"del_doc_{doc['id']}"):
+                    if st.button("Delete", key=f"del_doc_{doc['id']}", icon=":material/delete:", help="Remove this document", width="stretch"):
                         DocumentModel.delete_document(doc['id'])
                         st.rerun()
             st.divider()

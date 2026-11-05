@@ -1,0 +1,8 @@
+
+ACID properties guarantee reliable database transactions: Atomicity, Consistency, Isolation and Durability.
+Atomicity means all operations in a transaction complete or none do (all or nothing), by rolling back on
+failure. Consistency means a transaction moves the database from one valid state to another and preserves all
+constraints. Isolation means concurrent transactions leave the database in the same state as if they had run
+one after another. Durability means that once a transaction commits, its changes persist permanently even
+after a system crash. Example: in a bank transfer, the debit and the credit must both succeed or both be
+undone.

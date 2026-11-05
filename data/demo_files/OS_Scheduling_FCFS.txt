@@ -1,0 +1,6 @@
+
+First-Come, First-Served (FCFS) is the simplest CPU scheduling algorithm: processes run in the order they
+arrive in the ready queue. It is non-preemptive, so a running process keeps the CPU until it finishes or
+blocks. Its main weakness is the convoy effect, where many short processes wait behind one long CPU-bound
+process, which increases the average waiting time. FCFS is easy to implement with a FIFO queue but is a poor
+choice for interactive systems.

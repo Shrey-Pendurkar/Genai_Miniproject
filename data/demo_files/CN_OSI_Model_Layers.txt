@@ -1,0 +1,8 @@
+
+The OSI reference model divides network communication into seven layers, from bottom to top: Physical, Data
+Link, Network, Transport, Session, Presentation and Application. The Physical layer transmits raw bits over
+the medium. The Data Link layer handles framing, MAC addressing and error detection (Ethernet, Wi-Fi). The
+Network layer does logical IP addressing and routing. The Transport layer provides end-to-end delivery, error
+recovery and flow control (TCP, UDP). The Session layer establishes and maintains sessions. The Presentation
+layer handles encryption, compression and data format conversion. The Application layer carries user protocols
+such as HTTP, FTP, SMTP and DNS.

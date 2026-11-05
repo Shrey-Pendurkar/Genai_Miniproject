@@ -1,0 +1,5 @@
+
+Use UDP when low latency matters more than perfect delivery: DNS lookups, live video streaming, voice calls
+and online gaming. Use TCP when every byte must arrive correctly and in order: web pages (HTTP and HTTPS),
+email, file transfer and remote login. UDP is preferred for real-time traffic because retransmitting a lost
+packet would arrive too late to be useful.

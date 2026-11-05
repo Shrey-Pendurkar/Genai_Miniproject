@@ -1,0 +1,6 @@
+
+The Transformer (Vaswani et al., 2017, Attention Is All You Need) replaced recurrent neural networks (RNNs)
+with self-attention, so all words in a sequence are processed in parallel. Multi-head attention runs several
+attention heads in parallel so the model can attend to information from different representation subspaces at
+once, and the head outputs are concatenated. Positional encodings are added to the word embeddings to inject
+word order, because attention by itself has no sense of sequence.

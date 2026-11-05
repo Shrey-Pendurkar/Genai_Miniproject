@@ -1,0 +1,7 @@
+
+Deadlock avoidance examines each resource request dynamically and grants it only if the system stays in a safe
+state, meaning there is some order in which every process can still finish. The best-known method is
+Dijkstra's Banker's Algorithm. It uses the Available, Max, Allocation and Need matrices, where Need = Max -
+Allocation. A request is granted only if it does not exceed Need or Available and a safe sequence still
+exists; otherwise the process must wait. The main limitation of avoidance is that every process must declare
+its maximum resource demand in advance.

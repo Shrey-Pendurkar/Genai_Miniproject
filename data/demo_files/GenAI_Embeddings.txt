@@ -1,0 +1,5 @@
+
+An embedding is a dense numeric vector that represents the meaning of a piece of text, so texts with similar
+meaning lie close together in vector space. Sentence-transformer models such as all-MiniLM-L6-v2 map text to
+384-dimensional vectors. A vector store keeps the chunk vectors and returns the top-K nearest to the query
+vector.

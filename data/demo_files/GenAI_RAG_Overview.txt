@@ -1,0 +1,5 @@
+
+Retrieval-Augmented Generation (RAG) combines a retriever with a large language model: relevant passages are
+fetched from an external knowledge base and given to the LLM as context, so answers are grounded in real
+documents and can cite their sources. This reduces hallucination, although it does not remove it completely.
+RAG can use new or private documents without retraining the model.

@@ -1,0 +1,9 @@
+
+A deadlock is a state in which two or more processes are permanently blocked because each holds a resource
+that another process in the set needs, forming a circular dependency. Four necessary conditions, called the
+Coffman conditions, must hold at the same time for a deadlock to occur: mutual exclusion, hold and wait, no
+preemption, and circular wait. Mutual exclusion means at least one resource is held in a non-shareable mode.
+Hold and wait means a process holds at least one resource while waiting to acquire others. No preemption means
+resources cannot be forcibly taken away and are released only voluntarily. Circular wait means a closed chain
+of processes exists in which each process waits for a resource held by the next one. If any one of the four
+conditions is broken, a deadlock cannot occur.

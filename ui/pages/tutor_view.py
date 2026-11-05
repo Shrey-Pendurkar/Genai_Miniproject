@@ -6,8 +6,7 @@ from features.chat import ChatFeature
 def render_tutor_page():
     UIComponents.render_header(
         title="AI Tutor",
-        subtitle="Ask questions, explore tutoring modes, and get grounded explanations with source citations.",
-        icon="💬"
+        subtitle="Ask questions, explore tutoring modes, and get grounded explanations with source citations."
     )
 
     user = st.session_state.get("authenticated_user", {})
@@ -48,7 +47,7 @@ def render_tutor_page():
     with col_cls:
         st.write("")
         st.write("")
-        if st.button("🧹 Clear", help="Reset Chat Thread", use_container_width=True):
+        if st.button("Clear", icon=":material/delete_sweep:", help="Reset chat thread", width="stretch"):
             st.session_state.chat_history = [
                 {
                     "role": "assistant",
@@ -75,13 +74,15 @@ def render_tutor_page():
     # Render Chat History
     for msg in st.session_state.chat_history:
         if msg["role"] == "user":
-            st.markdown(f'<div class="sm-chat-user"><b>🧑‍🎓 Student:</b><br>{msg["content"]}</div>', unsafe_allow_html=True)
+            with st.chat_message("user"):
+                st.markdown(msg["content"])
         else:
-            st.markdown(f'<div class="sm-chat-ai"><b>🧠 StudyMind AI Tutor:</b><br>{msg["content"]}</div>', unsafe_allow_html=True)
-            if msg.get("sources"):
-                UIComponents.render_source_chips(msg["sources"])
-            if msg.get("transparency"):
-                UIComponents.render_transparency_accordion(msg["transparency"])
+            with st.chat_message("assistant", avatar=":material/auto_awesome:"):
+                st.markdown(msg["content"])
+                if msg.get("sources"):
+                    UIComponents.render_source_chips(msg["sources"])
+                if msg.get("transparency"):
+                    UIComponents.render_transparency_accordion(msg["transparency"])
 
     # User Input Field
     user_input = st.chat_input(f"Ask AI Tutor about {selected_doc_label}...")

@@ -1,0 +1,7 @@
+
+Deadlock detection and recovery lets the system enter a deadlock, detects it periodically, and then recovers
+from it. For resources with a single instance, detection uses a wait-for graph, and a cycle in the graph means
+a deadlock exists. For resources with multiple instances, a detection algorithm similar to the Banker's safety
+check is used. Recovery is done either by process termination, aborting all deadlocked processes or one at a
+time until the cycle is broken, or by resource preemption, taking resources from some processes and rolling
+them back. The costs are detection overhead and lost work.

@@ -1,0 +1,6 @@
+
+First Normal Form (1NF) requires every attribute to hold atomic, indivisible values, with no repeating groups.
+Second Normal Form (2NF) requires the table to be in 1NF and every non-key attribute to be fully functionally
+dependent on the whole primary key, which eliminates partial dependencies. Partial dependencies can only occur
+when the primary key is composite. Example: in OrderItem(OrderID, ProductID, ProductName, Qty), ProductName
+depends only on ProductID, so it is moved to a separate Product table.

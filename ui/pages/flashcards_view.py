@@ -6,8 +6,7 @@ from features.flashcards import FlashcardFeature
 def render_flashcards_page():
     UIComponents.render_header(
         title="Smart Flashcards",
-        subtitle="Master high-yield concepts using active recall and spaced repetition.",
-        icon="🃏"
+        subtitle="Master high-yield concepts using active recall and spaced repetition."
     )
 
     user = st.session_state.get("authenticated_user")
@@ -24,7 +23,7 @@ def render_flashcards_page():
     selected_doc_name = st.selectbox("Select Study Material for Flashcard Generation", doc_names)
     selected_doc_id = doc_options[selected_doc_name]
 
-    if st.button("✨ Generate AI Flashcard Deck", key="btn_gen_cards", use_container_width=True):
+    if st.button("Generate AI flashcard deck", key="btn_gen_cards", type="primary", icon=":material/auto_awesome:", width="stretch"):
         with st.spinner(f"Synthesizing concept flashcards for '{selected_doc_name}'..."):
             FlashcardFeature.generate_cards(topic=selected_doc_name, doc_id=selected_doc_id, num_cards=6, user_id=user_id)
             st.success(f"Generated new Flashcard deck for '{selected_doc_name}'!")
@@ -51,17 +50,17 @@ def render_flashcards_page():
 
     if not is_flipped:
         st.markdown(f"""
-        <div class="sm-card" style="height: 240px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border: 2px solid #6366f1;">
-            <div style="font-size: 0.85rem; color: #818cf8; text-transform: uppercase; font-weight: 700; margin-bottom: 8px;">QUESTION</div>
-            <h3 style="color: #f8fafc; font-size: 1.35rem; margin: 0 20px;">{card['question']}</h3>
-            <div style="margin-top: 20px; font-size: 0.82rem; color: #64748b;">(Click 'Flip Card' below to reveal answer)</div>
+        <div class="sm-flashcard">
+            <div class="sm-flashcard-label">Question</div>
+            <p class="sm-flashcard-text">{card['question']}</p>
+            <div class="sm-flashcard-hint">Select “Flip card” to reveal the answer</div>
         </div>
         """, unsafe_allow_html=True)
     else:
         st.markdown(f"""
-        <div class="sm-card-gradient" style="height: 240px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-            <div style="font-size: 0.85rem; color: #a855f7; text-transform: uppercase; font-weight: 700; margin-bottom: 8px;">ANSWER</div>
-            <p style="color: #f8fafc; font-size: 1.15rem; line-height: 1.5; margin: 0 20px;">{card['answer']}</p>
+        <div class="sm-flashcard is-answer">
+            <div class="sm-flashcard-label">Answer</div>
+            <p class="sm-flashcard-text">{card['answer']}</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -69,19 +68,19 @@ def render_flashcards_page():
     col_flip, col_knew, col_again = st.columns(3)
 
     with col_flip:
-        if st.button("🔄 Flip Card", key="btn_flip"):
+        if st.button("Flip card", key="btn_flip", type="primary", icon=":material/flip:", width="stretch"):
             st.session_state["card_flipped"] = not is_flipped
             st.rerun()
 
     with col_knew:
-        if st.button("✅ I Know This (+5 XP)", key="btn_knew"):
+        if st.button("I know this (+5 XP)", key="btn_knew", icon=":material/check_circle:", width="stretch"):
             FlashcardFeature.record_review(card["id"], knew_it=True)
             st.session_state["card_flipped"] = False
             st.session_state["card_idx"] = (curr_idx + 1) % len(cards)
             st.rerun()
 
     with col_again:
-        if st.button("↻ Review Again", key="btn_again"):
+        if st.button("Review again", key="btn_again", icon=":material/replay:", width="stretch"):
             FlashcardFeature.record_review(card["id"], knew_it=False)
             st.session_state["card_flipped"] = False
             st.session_state["card_idx"] = (curr_idx + 1) % len(cards)
@@ -90,12 +89,12 @@ def render_flashcards_page():
     # Navigation Buttons
     col_prev, _, col_next = st.columns([1, 2, 1])
     with col_prev:
-        if st.button("← Previous", key="btn_prev_card"):
+        if st.button("Previous", key="btn_prev_card", icon=":material/arrow_back:", width="stretch"):
             st.session_state["card_flipped"] = False
             st.session_state["card_idx"] = max(0, curr_idx - 1)
             st.rerun()
     with col_next:
-        if st.button("Next →", key="btn_next_card"):
+        if st.button("Next", key="btn_next_card", icon=":material/arrow_forward:", icon_position="right", width="stretch"):
             st.session_state["card_flipped"] = False
             st.session_state["card_idx"] = (curr_idx + 1) % len(cards)
             st.rerun()

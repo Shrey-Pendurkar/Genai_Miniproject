@@ -6,8 +6,7 @@ from database.models import UserModel
 def render_study_planner_page():
     UIComponents.render_header(
         title="Personalized AI Study Planner",
-        subtitle="AI-driven study schedule tailored to your subjects, exam date, and weak topics.",
-        icon="📅"
+        subtitle="AI-driven study schedule tailored to your subjects, exam date, and weak topics."
     )
 
     user = UserModel.get_user()
@@ -21,7 +20,7 @@ def render_study_planner_page():
         with col3:
             daily_hours = st.slider("Daily Study Hours", min_value=1.0, max_value=8.0, value=float(user.get("daily_hours", 2.5)), step=0.5)
 
-        if st.button("✨ Regenerate AI Schedule", key="btn_regen_plan"):
+        if st.button("Regenerate AI schedule", key="btn_regen_plan", type="primary", icon=":material/autorenew:"):
             with st.spinner("Analyzing target exam date, daily hours & weak topics..."):
                 StudyPlanFeature.generate_personalized_plan(
                     subjects=subjects,
@@ -31,7 +30,7 @@ def render_study_planner_page():
                 st.rerun()
 
     st.markdown("---")
-    st.markdown("### 📅 Dynamic Study Schedule")
+    st.markdown("### Dynamic Study Schedule")
 
     plans = StudyPlanFeature.get_plans()
     if not plans:

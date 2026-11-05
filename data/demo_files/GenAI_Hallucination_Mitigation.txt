@@ -1,0 +1,6 @@
+
+How to reduce hallucination in LLMs (hallucination mitigation): use retrieval-augmented generation, instruct
+the model to answer only from the provided context and to say when it does not know, cite sources with page
+numbers, use a low temperature, and keep a human in the loop to verify important claims. These mitigation
+strategies lower the hallucination rate but cannot guarantee zero hallucination. A grounding score estimates
+how much of an answer is supported by the retrieved text.

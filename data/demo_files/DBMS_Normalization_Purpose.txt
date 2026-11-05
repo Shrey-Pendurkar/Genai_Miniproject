@@ -1,0 +1,6 @@
+
+Database normalization is a systematic way of organising data in a relational database to reduce data
+redundancy and eliminate anomalies. The three anomalies are the insertion anomaly (a fact cannot be added
+without unrelated data), the deletion anomaly (deleting a row unintentionally removes other facts) and the
+update anomaly (a fact stored in many rows must be changed in every one of them). Normalization works by
+decomposing tables using functional dependencies and moving through the normal forms 1NF, 2NF, 3NF and BCNF.

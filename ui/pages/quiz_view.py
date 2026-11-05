@@ -7,8 +7,7 @@ from features.quiz import QuizFeature
 def render_quiz_page():
     UIComponents.render_header(
         title="Quiz Generator & Adaptive Learning",
-        subtitle="Generate dynamic AI quizzes from study material and test your understanding.",
-        icon="🎯"
+        subtitle="Generate dynamic AI quizzes from study material and test your understanding."
     )
 
     user = st.session_state.get("authenticated_user")
@@ -33,9 +32,9 @@ def render_quiz_page():
     with col_n:
         num_questions = st.select_slider("Questions", [3, 5, 10], value=5)
 
-    is_adaptive = st.toggle("🧠 Enable Adaptive Difficulty Mode", value=True, help="Difficulty dynamically adjusts based on your live accuracy.")
+    is_adaptive = st.toggle("Enable adaptive difficulty mode", value=True, help="Difficulty dynamically adjusts based on your live accuracy.")
 
-    if st.button("🚀 Generate Quiz", key="btn_gen_quiz", use_container_width=True):
+    if st.button("Generate quiz", key="btn_gen_quiz", type="primary", icon=":material/auto_awesome:", width="stretch"):
         diff_bar_map = {
             "Easy": "███░░░░░░░ 30%",
             "Medium": "██████░░░░ 60%",
@@ -117,7 +116,7 @@ def render_quiz_page():
         st.divider()
 
     if not is_submitted:
-        if st.button("📥 Submit Quiz", key="btn_submit_quiz"):
+        if st.button("Submit quiz", key="btn_submit_quiz", type="primary", icon=":material/task_alt:"):
             st.session_state["quiz_submitted"] = True
             time_taken = int(time.time() - active_quiz["start_time"])
 

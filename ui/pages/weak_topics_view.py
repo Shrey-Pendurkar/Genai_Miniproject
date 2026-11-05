@@ -5,8 +5,7 @@ from features.weak_topics import WeakTopicFeature
 def render_weak_topics_page():
     UIComponents.render_header(
         title="Weak Topic Detection & AI Revision",
-        subtitle="Identify conceptual gaps from quiz attempts and launch targeted 'Fix My Weakness' revision loops.",
-        icon="🧠"
+        subtitle="Identify conceptual gaps from quiz attempts and launch targeted 'Fix My Weakness' revision loops."
     )
 
     weak_list = WeakTopicFeature.get_weak_topics()
@@ -15,7 +14,7 @@ def render_weak_topics_page():
         st.success("🎉 No weak topics detected! Your overall quiz accuracy is high across all subjects.")
         return
 
-    st.markdown("### 🔴 Identified Weak Concept Areas")
+    st.markdown("### Identified Weak Concept Areas")
 
     for item in weak_list:
         acc = item["accuracy_percentage"]
@@ -31,7 +30,7 @@ def render_weak_topics_page():
                 st.caption(f"Accuracy: {acc}% | Total Attempts: {item['total_attempted']} | Mistakes: {item['error_count']}")
 
             with col2:
-                if st.button("✨ Fix My Weakness", key=f"btn_fix_{item['id']}"):
+                if st.button("Fix my weakness", key=f"btn_fix_{item['id']}", type="primary", icon=":material/build:"):
                     st.session_state["active_weak_topic"] = item["topic"]
                     st.rerun()
 

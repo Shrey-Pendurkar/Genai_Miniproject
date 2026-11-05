@@ -6,8 +6,7 @@ from core.vector_store import global_vector_store
 def render_search_page():
     UIComponents.render_header(
         title="Semantic Search Engine",
-        subtitle="Search across your study materials using deep vector similarity embeddings.",
-        icon="🔎"
+        subtitle="Search across your study materials using deep vector similarity embeddings."
     )
 
     user = st.session_state.get("authenticated_user", {})
@@ -38,7 +37,7 @@ def render_search_page():
             st.markdown(f"### 🎯 Found {len(results)} Relevant Passages")
             for idx, res in enumerate(results):
                 score_pct = int(res['score'] * 100)
-                score_color = "#22c55e" if score_pct >= 70 else "#eab308" if score_pct >= 40 else "#ef4444"
+                score_color = "#34D399" if score_pct >= 70 else "#FBBF24" if score_pct >= 40 else "#FB7185"
 
                 with st.container():
                     col_info, col_btn = st.columns([4, 1])
@@ -46,12 +45,12 @@ def render_search_page():
                         st.markdown(f"""
                         <div class="sm-card" style="padding: 16px; margin-bottom: 12px;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <span style="font-weight: 700; color: #818cf8;">📄 {res['filename']} (Page {res['page_number']})</span>
-                                <span style="background: {score_color}22; color: {score_color}; font-weight: 700; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; border: 1px solid {score_color}44;">
-                                    {score_pct}% Match
+                                <span style="font-weight: 600; color: var(--text);">{res['filename']} <span style="color: var(--text-muted); font-weight: 500;">· page {res['page_number']}</span></span>
+                                <span style="background: {score_color}22; color: {score_color}; font-weight: 600; font-size: 0.78rem; padding: 3px 10px; border-radius: 999px; border: 1px solid {score_color}44;">
+                                    {score_pct}% match
                                 </span>
                             </div>
-                            <p style="color: #e2e8f0; font-size: 0.95rem; line-height: 1.5; background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: 8px; border-left: 3px solid #818cf8; margin: 0;">
+                            <p style="color: var(--text); font-size: 0.92rem; line-height: 1.55; background: var(--surface-2); padding: 12px 14px; border-radius: 8px; border-left: 3px solid var(--accent); margin: 0;">
                                 "{res['content']}"
                             </p>
                         </div>
@@ -59,7 +58,7 @@ def render_search_page():
                     with col_btn:
                         st.write("")
                         st.write("")
-                        if st.button("💬 Ask Tutor", key=f"btn_ask_tutor_{idx}", use_container_width=True):
+                        if st.button("Ask tutor", key=f"btn_ask_tutor_{idx}", icon=":material/forum:", width="stretch"):
                             st.session_state["chat_history"] = st.session_state.get("chat_history", [])
                             st.session_state["chat_history"].append({
                                 "role": "user",

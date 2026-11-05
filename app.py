@@ -1,15 +1,17 @@
+import html
 import streamlit as st
 import logging
 
 # Page Config must be first Streamlit call
 st.set_page_config(
-    page_title="StudyMind – AI-Powered Personal Learning OS",
+    page_title="StudyMind | AI Personal Learning OS",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 from ui.styles import inject_custom_css
+from ui.components import icon_svg
 from utils.seed_demo_data import seed_demo_data_if_needed
 from database.models import UserModel
 
@@ -32,6 +34,24 @@ from ui.pages.professor_demo_view import render_professor_demo_page
 
 logger = logging.getLogger(__name__)
 
+# Display-only Material icons for the sidebar menu, keyed by the routing label.
+NAV_ICONS = {
+    "🏠 Dashboard": ":material/space_dashboard:",
+    "📚 My Library": ":material/library_books:",
+    "💬 AI Tutor": ":material/forum:",
+    "🔎 Semantic Search": ":material/search:",
+    "📝 Summarize": ":material/summarize:",
+    "🎯 Quiz Generator": ":material/quiz:",
+    "🃏 Flashcards": ":material/style:",
+    "🧪 Mock Exam": ":material/assignment:",
+    "📅 Study Planner": ":material/calendar_month:",
+    "📊 Analytics": ":material/monitoring:",
+    "🧠 Weak Topics": ":material/trending_down:",
+    "⚖️ Responsible AI": ":material/verified_user:",
+    "🧪 How It Works (Viva)": ":material/account_tree:",
+    "⚙ Settings": ":material/settings:",
+}
+
 def main():
     # Inject Custom CSS
     inject_custom_css()
@@ -44,13 +64,12 @@ def main():
 
     # Sidebar Header Branding
     with st.sidebar:
-        st.markdown("""
-        <div style="padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 16px;">
-            <div style="font-size: 1.6rem; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 8px;">
-                <span>🧠</span> <span>StudyMind</span>
-            </div>
-            <div style="font-size: 0.76rem; color: #818cf8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">
-                AI Personal Learning OS
+        st.markdown(f"""
+        <div class="sm-brand">
+            <div class="sm-brand-mark">{icon_svg("brain")}</div>
+            <div>
+                <div class="sm-brand-name">StudyMind</div>
+                <div class="sm-brand-tag">AI Personal Learning OS</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -77,31 +96,34 @@ def main():
         default_nav = st.session_state.get("active_nav", "🏠 Dashboard")
         default_idx = nav_options.index(default_nav) if default_nav in nav_options else 0
 
+        # Routing keys stay as-is (other pages set `active_nav` with them);
+        # only the displayed label changes to a clean text + Material icon.
         selected_nav = st.radio(
             "Main Navigation",
             nav_options,
             index=default_idx,
-            label_visibility="collapsed"
+            label_visibility="collapsed",
+            format_func=lambda key: f"{NAV_ICONS.get(key, ':material/circle:')}  {key.split(' ', 1)[1]}",
         )
         st.session_state["active_nav"] = selected_nav
 
         st.markdown("---")
-        
+
         # Logged In User Profile & Logout
+        user_name = html.escape(str(user.get('name', 'Student')))
+        initials = "".join(w[0] for w in user_name.split()[:2]).upper() or "S"
         st.markdown(f"""
-        <div style="background: rgba(30, 41, 59, 0.5); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 10px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="font-size: 1.4rem;">🧑‍🎓</div>
-                <div>
-                    <div style="font-weight: 700; font-size: 0.9rem; color: #f8fafc;">{user.get('name', 'Student')}</div>
-                    <div style="font-size: 0.73rem; color: #818cf8;">{user.get('email', 'private@studymind.ai')}</div>
-                    <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 2px;">Level {user.get('level', 1)} • {user.get('xp_points', 150)} XP</div>
-                </div>
+        <div class="sm-user">
+            <div class="sm-avatar">{initials}</div>
+            <div style="min-width:0;">
+                <div class="sm-user-name">{user_name}</div>
+                <div class="sm-user-meta">Level {user.get('level', 1)} · {user.get('xp_points', 150)} XP</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
+        st.write("")
 
-        if st.button("🚪 Sign Out", key="btn_logout", use_container_width=True):
+        if st.button("Sign out", key="btn_logout", icon=":material/logout:", width="stretch"):
             st.session_state["authenticated_user"] = None
             st.session_state["active_nav"] = "🏠 Dashboard"
             st.rerun()

@@ -5,14 +5,13 @@ from database.db import get_connection
 def render_responsible_ai_page():
     UIComponents.render_header(
         title="Responsible AI & Grounding Transparency",
-        subtitle="Ethical AI principles, hallucination mitigation, source citation policies, and data privacy controls.",
-        icon="⚖️"
+        subtitle="Ethical AI principles, hallucination mitigation, source citation policies, and data privacy controls."
     )
 
     st.markdown("""
     <div class="sm-card-gradient">
-        <h3 style="margin-top: 0; color: #f8fafc;">🛡️ Responsible AI Core Directives</h3>
-        <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">
+        <h3 style="margin-top: 0;">Responsible AI core directives</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
             StudyMind is architected around <b>Strict RAG Grounding</b> to prevent academic hallucination.
             Every generated explanation prioritizes uploaded course material over pre-trained model biases.
         </p>
@@ -23,37 +22,37 @@ def render_responsible_ai_page():
 
     with col1:
         st.markdown("""
-        ### 📄 1. Source Citation Integrity
+        ### 1. Source Citation Integrity
         * **Verifiable Footnotes**: Answers display exact source document filenames and page numbers.
         * **Snippet Verification**: Students can view the raw retrieved passage alongside generated explanations.
         * **No Pretense Policy**: If context is missing, StudyMind explicitly states: *"I couldn't find enough information in your uploaded study material."*
         """)
 
         st.markdown("""
-        ### 🧠 2. Hallucination Awareness
+        ### 2. Hallucination Awareness
         * **Grounding Score Index**: Each answer evaluates n-gram overlap between retrieved context and output.
         * **Low-Confidence Warnings**: Outputs with confidence scores < 40% are flagged with warning badges.
         """)
 
     with col2:
         st.markdown("""
-        ### 🔒 3. Data Privacy & Local Control
+        ### 3. Data Privacy & Local Control
         * **Zero Remote Storage**: Your study notes, PDFs, vector indexes, and database logs remain stored 100% locally on your computer.
         * **No Telemetry**: No user text or uploaded files are sent to third parties for model training.
         * **Data Erasure**: You maintain complete control to purge your data instantly at any time.
         """)
 
         st.markdown("""
-        ### ⚠️ Academic Advisory Notice
+        ### Academic Advisory Notice
         > **Academic Disclaimer:** AI-generated explanations and quizzes are supplementary learning tools. Always verify critical definitions, formulas, and academic claims with your university course materials.
         """)
 
     st.markdown("---")
-    st.markdown("### 🗑️ Data Privacy & Erasure Controls")
+    st.markdown("### Data Privacy & Erasure Controls")
 
     col_btn1, col_btn2 = st.columns(2)
     with col_btn1:
-        if st.button("🔴 Clear All Indexed Documents", key="btn_clear_docs"):
+        if st.button("Clear all indexed documents", key="btn_clear_docs", icon=":material/delete_forever:"):
             conn = get_connection()
             conn.execute("DELETE FROM documents")
             conn.execute("DELETE FROM document_chunks")
@@ -62,7 +61,7 @@ def render_responsible_ai_page():
             st.success("All indexed documents cleared from local database.")
 
     with col_btn2:
-        if st.button("🔴 Reset Learning History & Quizzes", key="btn_clear_history"):
+        if st.button("Reset learning history & quizzes", key="btn_clear_history", icon=":material/restart_alt:"):
             conn = get_connection()
             conn.execute("DELETE FROM quiz_attempts")
             conn.execute("DELETE FROM flashcards")

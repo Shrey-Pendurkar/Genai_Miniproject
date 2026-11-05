@@ -1,0 +1,8 @@
+
+Deadlock prevention makes deadlock impossible by ensuring that at least one Coffman condition can never hold:
+make resources shareable (mutual exclusion), request all resources at once (hold and wait), allow preemption
+of resources (no preemption), or impose a total ordering on resource requests (circular wait). To break hold
+and wait, a process must either request all its resources before it starts or release everything it holds
+before requesting more. To break circular wait, every resource type is numbered and processes must request
+resources in increasing order. The drawbacks of prevention are lower resource utilisation and possible
+starvation.
