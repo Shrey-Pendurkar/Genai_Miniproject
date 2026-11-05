@@ -52,9 +52,22 @@ NAV_ICONS = {
     "⚙ Settings": ":material/settings:",
 }
 
+@st.cache_resource(show_spinner="Preparing demo study materials (first start only)...")
+def _bootstrap_demo_data():
+    """Seeds the demo study notes (DB rows + vector index) once per server process.
+
+    The database, vector index and uploads are git-ignored, so a fresh deployment starts
+    empty. seed_demo_data_if_needed() is a no-op when the demo documents already exist.
+    """
+    seed_demo_data_if_needed()
+    return True
+
 def main():
     # Inject Custom CSS
     inject_custom_css()
+
+    # Make sure the demo account has its study notes (fresh deployments start empty)
+    _bootstrap_demo_data()
 
     # Check Authentication Gate
     user = st.session_state.get("authenticated_user")

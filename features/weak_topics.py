@@ -13,9 +13,9 @@ class WeakTopicFeature:
         topics = WeakTopicModel.get_weak_topics()
         if not topics:
             # Starter seed topics if DB is new
-            WeakTopicModel.update_topic_performance("DBMS Normalization (2NF/3NF)", 2, 5) # 40%
-            WeakTopicModel.update_topic_performance("OS Deadlock Detection", 4, 6) # 66.7%
-            WeakTopicModel.update_topic_performance("Computer Networks Subnetting", 8, 9) # 88.9%
+            WeakTopicModel.update_topic_performance(1, "DBMS Normalization (2NF/3NF)", 2, 5) # 40%
+            WeakTopicModel.update_topic_performance(1, "OS Deadlock Detection", 4, 6) # 66.7%
+            WeakTopicModel.update_topic_performance(1, "Computer Networks Subnetting", 8, 9) # 88.9%
             topics = WeakTopicModel.get_weak_topics()
         return topics
 

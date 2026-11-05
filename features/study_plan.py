@@ -32,6 +32,7 @@ class StudyPlanFeature:
         # Save generated tasks into DB
         for item in plan_items:
             StudyPlanModel.add_plan_item(
+                user_id=1,  # matches StudyPlanModel.get_plans(), which defaults to user 1
                 title=item.get("title", "Study Session"),
                 plan_date=item.get("plan_date", datetime.now().strftime("%Y-%m-%d")),
                 time_slot=item.get("time_slot", "09:00 AM"),

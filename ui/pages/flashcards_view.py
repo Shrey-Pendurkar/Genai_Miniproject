@@ -33,6 +33,10 @@ def render_flashcards_page():
     if not cards:
         cards = FlashcardFeature.get_cards_for_topic(topic="All Topics", user_id=user_id)
 
+    if not cards:
+        st.info("No flashcards yet for this material. Click **Generate AI flashcard deck** above to create your first deck.")
+        return
+
     # Index management in session state
     if "card_idx" not in st.session_state:
         st.session_state["card_idx"] = 0

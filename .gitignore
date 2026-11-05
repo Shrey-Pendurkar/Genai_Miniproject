@@ -1,2 +1,26 @@
+# --- Secrets & environment (never commit) ---
 .env
-.env.example
+.streamlit/secrets.toml
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+*.egg-info/
+
+# --- Local runtime data: recreated automatically on first run ---
+# The SQLite database, vector index and user uploads are machine-specific and may hold personal data.
+# The demo study notes in data/demo_files/ ARE kept; the app re-seeds them (DB + index) at startup.
+data/studymind.db
+data/studymind.db-*
+data/vectorstore/
+data/uploads/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
